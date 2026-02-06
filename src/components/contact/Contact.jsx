@@ -9,28 +9,41 @@ function Contact() {
   const [result, setResult] = useState("");
 
   const onSubmit = async (event) => {
-    const accessKey = import.meta.env.VITE_WEB3FORMS_KEY;
-    console.log("Vite Key Status:", accessKey ? "Loaded" : "Undefined");
     event.preventDefault();
-    setResult("Sending....");
-    const formData = new FormData(event.target);
+    setResult("Sending...");
 
-    formData.append("access_key", accessKey);
+    try {
+      const key = import.meta.env.VITE_WEB3FORMS_KEY;
 
-    const response = await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      body: formData,
-    });
+      if (!key) {
+        setResult("Access key missing");
+        return;
+      }
 
-    const data = await response.json();
-    if (data.success) {
-      setResult("Form Submitted Successfully");
-      event.target.reset();
-    } else {
-      setResult("Error");
-      console.log("Error:", data.error);
+      const formData = new FormData(event.target);
+      formData.append("access_key", key);
+
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setResult("Form Submitted Successfully ✅");
+        event.target.reset();
+      } else {
+        setResult(data.message || "Submission failed ❌");
+        console.log("Web3Forms error:", data);
+      }
+    } catch (error) {
+      console.error("Submit error:", error);
+      setResult("Network error ❌");
+      console.log(import.meta.env.VITE_WEB3FORMS_KEY);
     }
   };
+
   return (
     <div className="contact">
       <div className="contact-col">
