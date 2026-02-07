@@ -1,6 +1,6 @@
 {
   "name": "full-stack-web-app",
-  "homepage": "https://JoeSigma4.github.io/education-website-project",
+  "homepage": "https://JoeSigma4.github.io/education-website-project/",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "start": "react-scripts start",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": " gh-pages -d dist -f"
   },
   "dependencies": {
     "gh-pages": "^6.3.0",
